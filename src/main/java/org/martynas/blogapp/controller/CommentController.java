@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import java.util.logging.Logger;  // Example for java.util.logging
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -22,7 +23,8 @@ import java.util.Optional;
 @Controller
 @SessionAttributes("comment")
 public class CommentController {
-
+    private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
+    private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
     private final PostService postService;
     private final BlogUserService blogUserService;
     private final CommentService commentService;
@@ -46,7 +48,6 @@ public class CommentController {
         // the end of curiosity //
 
 //        // get username of current logged in session user
-//        String authUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         // find user by username
         Optional<BlogUser> optionalBlogUser = this.blogUserService.findByUsername(authUsername);
         // find post by id
@@ -57,10 +58,10 @@ public class CommentController {
             comment.setPost(postOptional.get());
             comment.setUser(optionalBlogUser.get());
             model.addAttribute("comment", comment);
-            System.err.println("GET comment/{id}: " + comment + "/" + id); // for testing debugging purposes
+            logger.info("GET comment/{id}: " + comment + "/" + id); // for testing debugging purposes
             return "commentForm";
         } else {
-            System.err.println("Could not find a post by id: " + id + " or user by logged in username: " + authUsername); // for testing debugging purposes
+            logger.info("Could not find a post by id: " + id + " or user by logged in username: " + authUsername); // for testing debugging purposes
             return "error";
         }
     }
@@ -68,13 +69,13 @@ public class CommentController {
     @Secured("ROLE_USER")
     @PostMapping("/comment")
     public String validateComment(@Valid @ModelAttribute Comment comment, BindingResult bindingResult, SessionStatus sessionStatus) {
-        System.err.println("POST comment: " + comment); // for testing debugging purposes
+        logger.info("POST comment: " + comment); // for testing debugging purposes
         if (bindingResult.hasErrors()) {
-            System.err.println("Comment did not validate");
+            logger.info("Comment did not validate");
             return "commentForm";
         } else {
             this.commentService.save(comment);
-            System.err.println("SAVE comment: " + comment); // for testing debugging purposes
+            logger.info("SAVE comment: " + comment); // for testing debugging purposes
             sessionStatus.setComplete();
             return "redirect:/post/" + comment.getPost().getId();
         }
