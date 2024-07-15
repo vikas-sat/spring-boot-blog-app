@@ -17,8 +17,8 @@ public class Authority implements GrantedAuthority {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "authorityName", unique = true, nullable = false)
-    private String authorityName;
+    @Column(name = "authority", unique = true, nullable = false)
+    private String authority;
 
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinTable(
@@ -32,14 +32,14 @@ public class Authority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return authorityName;
+        return authority;
     }
     
     @Override
     public String toString() {
         return "Authority{" +
                 "id=" + id +
-                ", authorityName='" + authorityName + '\'' +
+                ", authority='" + authority + '\'' +
 //                ", users=" + users +
                 '}';
     }
