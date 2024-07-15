@@ -1,0 +1,6 @@
+version: '3.8'
+services:
+  blog-app:
+    image: kaz1456/spring-boot-blog-app:latest
+    ports:
+      - "8082:8080"
