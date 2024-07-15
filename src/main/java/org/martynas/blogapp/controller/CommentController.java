@@ -23,7 +23,7 @@ import java.util.Optional;
 @Controller
 @SessionAttributes("comment")
 public class CommentController {
-    private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
+    private static final Logger logger = Logger.getLogger(CommentController.class.getName());
     private final PostService postService;
     private final BlogUserService blogUserService;
     private final CommentService commentService;
