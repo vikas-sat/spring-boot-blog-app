@@ -18,7 +18,7 @@ public class Authority implements GrantedAuthority {
     private Long id;
 
     @Column(name = "authority", unique = true, nullable = false)
-    private String authority;
+    private String authorityName;
 
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinTable(
