@@ -5,7 +5,7 @@ EXPOSE 8081
 ENV APP_HOME /usr/app
 
 # Copy the JAR file to the defined APP_HOME
-COPY target/spring-boot-blog-app-0.0.1-SNAPSHOT.jar $APP_HOME/app.jar
+COPY target/spring-boot-blog-app.jar $APP_HOME/app.jar
 
 # Set the working directory to APP_HOME
 WORKDIR $APP_HOME
