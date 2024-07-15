@@ -1,15 +1,8 @@
-# Use the appropriate base image for JDK 11 on Windows
-FROM java:11
-
-# Expose port 8080
-EXPOSE 8082
-
-ADD target/spring-boot-blog-app.jar spring-boot-blog-app.jar 
-# Set the environment variable for the application home directory
-
-# Copy the JAR file into the container
-
-# Set the working directory
-
-# Specify the entrypoint command to run the application
-ENTRYPOINT ["java", "-jar", "spring-boot-blog-app.jar"]
+FROM maven:3.6.0-jdk-11-slim AS build  
+COPY src /usr/src/app/src  
+COPY pom.xml /usr/src/app  
+RUN mvn -f /usr/src/app/pom.xml clean package
+FROM openjdk:11-jre-slim 
+COPY --from=build /usr/src/app/target/demo-0.0.1-SNAPSHOT.jar /usr/app/demo-0.0.1-SNAPSHOT.jar  
+EXPOSE 8080  
+CMD ["java","-jar","/usr/app/demo-0.0.1-SNAPSHOT.jar"]  
