@@ -21,9 +21,9 @@ import java.util.Optional;
 @Controller
 @SessionAttributes("post")
 public class PostController {
-    private final String a = "anonymousUser"
-    private final String f = "postForm"
-    private final String er = "error"
+    private final String a = "anonymousUser";
+    private final String f = "postForm";
+    private final String er = "error";
     private final PostService postService;
     private final BlogUserService blogUserService;
     private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
