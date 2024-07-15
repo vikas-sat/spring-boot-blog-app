@@ -17,12 +17,6 @@ public class LoginConroller {
             return "redirect:/"; // if user already logged in redirect back to root context
         } else {
         // the end of curiosity //
-
-//        // get current user from Security Context
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//        if (!username.equals("anonymousUser")) {
-//            return "redirect:/"; // if user already logged in redirect back to root context
-//        } else {
             return "login";
         }
     }
