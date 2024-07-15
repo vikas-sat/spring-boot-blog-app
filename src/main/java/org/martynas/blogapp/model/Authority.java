@@ -39,7 +39,7 @@ public class Authority implements GrantedAuthority {
     public String toString() {
         return "Authority{" +
                 "id=" + id +
-                ", authority='" + authority + '\'' +
+                ", authorityName='" + authorityName + '\'' +
 //                ", users=" + users +
                 '}';
     }
