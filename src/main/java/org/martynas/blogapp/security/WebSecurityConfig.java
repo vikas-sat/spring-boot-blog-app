@@ -69,11 +69,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery(AUTHORITIES_SQL_QUERY)  // a must as using customized authorities table, many to many variation
                 .dataSource(dataSource)
                 .passwordEncoder(bcryptEncoder());
-
-//        authenticationManagerBuilder
-//                .inMemoryAuthentication()
-//                .withUser("user").password(bcryptEncoder().encode("password")).roles("USER").and()
-//                .withUser("admin").password(bcryptEncoder().encode("password")).roles("USER", "ADMIN");
     }
 
 }
