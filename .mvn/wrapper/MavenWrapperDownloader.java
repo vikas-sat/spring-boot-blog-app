@@ -18,9 +18,10 @@ import java.net.*;
 import java.io.*;
 import java.nio.channels.*;
 import java.util.Properties;
+import java.util.logging.Logger;  // Example for java.util.logging
 
 public class MavenWrapperDownloader {
-
+    private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
     private static final String WRAPPER_VERSION = "0.5.6";
     /**
      * Default URL to download the maven-wrapper.jar from, if no 'downloadUrl' is provided.
@@ -46,10 +47,10 @@ public class MavenWrapperDownloader {
      */
     private static final String PROPERTY_NAME_WRAPPER_URL = "wrapperUrl";
 
-    public static void main(String args[]) {
-        System.out.println("- Downloader started");
+    public static void main(String[] args) {
+        logger.info("- Downloader started");
         File baseDirectory = new File(args[0]);
-        System.out.println("- Using base directory: " + baseDirectory.getAbsolutePath());
+        logger.info("- Using base directory: " + baseDirectory.getAbsolutePath());
 
         // If the maven-wrapper.properties exists, read it and check if it contains a custom
         // wrapperUrl parameter.
@@ -63,7 +64,7 @@ public class MavenWrapperDownloader {
                 mavenWrapperProperties.load(mavenWrapperPropertyFileInputStream);
                 url = mavenWrapperProperties.getProperty(PROPERTY_NAME_WRAPPER_URL, url);
             } catch (IOException e) {
-                System.out.println("- ERROR loading '" + MAVEN_WRAPPER_PROPERTIES_PATH + "'");
+                logger.info("- ERROR loading '" + MAVEN_WRAPPER_PROPERTIES_PATH + "'");
             } finally {
                 try {
                     if (mavenWrapperPropertyFileInputStream != null) {
@@ -74,22 +75,22 @@ public class MavenWrapperDownloader {
                 }
             }
         }
-        System.out.println("- Downloading from: " + url);
+        logger.info("- Downloading from: " + url);
 
-        File outputFile = new File(baseDirectory.getAbsolutePath(), MAVEN_WRAPPER_JAR_PATH);
-        if (!outputFile.getParentFile().exists()) {
-            if (!outputFile.getParentFile().mkdirs()) {
-                System.out.println(
+       File outputFile = new File(baseDirectory.getAbsolutePath(), MAVEN_WRAPPER_JAR_PATH);
+        if (!outputFile.getParentFile().exists() && !outputFile.getParentFile().mkdirs()) {
+
+
+                logger.info(
                         "- ERROR creating output directory '" + outputFile.getParentFile().getAbsolutePath() + "'");
             }
-        }
-        System.out.println("- Downloading to: " + outputFile.getAbsolutePath());
+        logger.info("- Downloading to: " + outputFile.getAbsolutePath());
         try {
             downloadFileFromURL(url, outputFile);
-            System.out.println("Done");
+            logger.info("Done");
             System.exit(0);
-        } catch (Throwable e) {
-            System.out.println("- Error downloading");
+        } catch (Exception e) {
+            logger.info("- Error downloading");
             e.printStackTrace();
             System.exit(1);
         }
@@ -106,13 +107,15 @@ public class MavenWrapperDownloader {
                 }
             });
         }
-        URL website = new URL(urlString);
-        ReadableByteChannel rbc;
-        rbc = Channels.newChannel(website.openStream());
-        FileOutputStream fos = new FileOutputStream(destination);
-        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        fos.close();
-        rbc.close();
+    try (ReadableByteChannel rbc = Channels.newChannel(new URL(urlString).openStream());
+    FileOutputStream fos = new FileOutputStream(destination)) {
+
+    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+
+    } catch (IOException e) {
+    // Handle exception
+    e.printStackTrace();
     }
+
 
 }
