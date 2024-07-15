@@ -26,7 +26,7 @@ public class PostController {
     private final String er = "error";
     private final PostService postService;
     private final BlogUserService blogUserService;
-    private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
+    private static final Logger logger = Logger.getLogger(PostController.class.getName());
     @Autowired
     public PostController(PostService postService, BlogUserService blogUserService) {
         this.postService = postService;
