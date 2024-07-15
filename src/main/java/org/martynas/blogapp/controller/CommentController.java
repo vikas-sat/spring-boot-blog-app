@@ -24,7 +24,6 @@ import java.util.Optional;
 @SessionAttributes("comment")
 public class CommentController {
     private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
-    private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
     private final PostService postService;
     private final BlogUserService blogUserService;
     private final CommentService commentService;
