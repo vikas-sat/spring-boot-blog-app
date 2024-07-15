@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import java.util.logging.Logger;  // Example for java.util.logging
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -20,10 +21,12 @@ import java.util.Optional;
 @Controller
 @SessionAttributes("post")
 public class PostController {
-
+    private final String a = "anonymousUser"
+    private final String f = "postForm"
+    private final String er = "error"
     private final PostService postService;
     private final BlogUserService blogUserService;
-
+    private static final Logger logger = Logger.getLogger(YourClassName.class.getName());
     @Autowired
     public PostController(PostService postService, BlogUserService blogUserService) {
         this.postService = postService;
@@ -34,14 +37,13 @@ public class PostController {
     public String getPost(@PathVariable Long id, Model model, Principal principal) {
 
         // Just curious  what if we get username from Principal instead of SecurityContext
-        String authUsername = "anonymousUser";
+        String authUsername = a;
         if (principal != null) {
             authUsername = principal.getName();
         }
         // the end of curiosity //
 
 //        // get username of current logged in session user
-//        String authUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // find post by id
         Optional<Post> optionalPost = this.postService.getById(id);
@@ -64,14 +66,13 @@ public class PostController {
     public String createNewPost(Model model, Principal principal) {
 
         // Just curious  what if we get username from Principal instead of SecurityContext
-        String authUsername = "anonymousUser";
+        String authUsername = a;
         if (principal != null) {
             authUsername = principal.getName();
         }
         // the end of curiosity //
 
 //        // get username of current logged in session user
-//        String authUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // find user by username
         Optional<BlogUser> optionalBlogUser = this.blogUserService.findByUsername(authUsername);
@@ -80,23 +81,23 @@ public class PostController {
             Post post = new Post();
             post.setUser(optionalBlogUser.get());
             model.addAttribute("post", post);
-            return "postForm";
+            return f;
         } else {
-            return "error";
+            return er;
         }
     }
 
     @Secured("ROLE_USER")
     @PostMapping("/createNewPost")
     public String createNewPost(@Valid @ModelAttribute Post post, BindingResult bindingResult, SessionStatus sessionStatus) {
-        System.err.println("POST post: " + post); // for testing debugging purposes
+        logger.info("POST post: " + post); // for testing debugging purposes
         if (bindingResult.hasErrors()) {
-            System.err.println("Post did not validate");
-            return "postForm";
+            logger.info("Post did not validate");
+            return f;
         }
         // Save post if all good
         this.postService.save(post);
-        System.err.println("SAVE post: " + post); // for testing debugging purposes
+        logger.info("SAVE post: " + post); // for testing debugging purposes
         sessionStatus.setComplete();
         return "redirect:/post/" + post.getId();
     }
@@ -105,14 +106,13 @@ public class PostController {
     @GetMapping("editPost/{id}")
     public String editPost(@PathVariable Long id, Model model, Principal principal) {
         // Just curious  what if we get username from Principal instead of SecurityContext
-        String authUsername = "anonymousUser";
+        String authUsername = a;
         if (principal != null) {
             authUsername = principal.getName();
         }
         // the end of curiosity //
 
 //        // get username of current logged in session user
-//        String authUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // find post by id
         Optional<Post> optionalPost = this.postService.getById(id);
@@ -122,15 +122,15 @@ public class PostController {
             // Check if current logged in user is owner
             if (authUsername.equals(post.getUser().getUsername())) {
                 model.addAttribute("post", post);
-                System.err.println("EDIT post: " + post); // for testing debugging purposes
-                return "postForm";
+                logger.info("EDIT post: " + post); // for testing debugging purposes
+                return f;
             } else {
-                System.err.println("Current User has no permissions to edit anything on post by id: " + id); // for testing debugging purposes
+                logger.info("Current User has no permissions to edit anything on post by id: " + id); // for testing debugging purposes
                 return "403";
             }
         } else {
-            System.err.println("Could not find a post by id: " + id); // for testing debugging purposes
-            return "error";
+            logger.info("Could not find a post by id: " + id); // for testing debugging purposes
+            return er;
         }
     }
 
@@ -139,14 +139,13 @@ public class PostController {
     public String deletePost(@PathVariable Long id, Principal principal) {
 
         // Just curious  what if we get username from Principal instead of SecurityContext
-        String authUsername = "anonymousUser";
+        String authUsername = a;
         if (principal != null) {
             authUsername = principal.getName();
         }
         // the end of curiosity //
 
 //        // get username of current logged in session user
-//        String authUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // find post by id
         Optional<Post> optionalPost = this.postService.getById(id);
@@ -157,15 +156,15 @@ public class PostController {
             if (authUsername.equals(post.getUser().getUsername())) {
                 // if so then it is safe to remove post from database
                 this.postService.delete(post);
-                System.err.println("DELETED post: " + post); // for testing debugging purposes
+                logger.info("DELETED post: " + post); // for testing debugging purposes
                 return "redirect:/";
             } else {
-                System.err.println("Current User has no permissions to edit anything on post by id: " + id); // for testing debugging purposes
+                logger.info("Current User has no permissions to edit anything on post by id: " + id); // for testing debugging purposes
                 return "403";
             }
         } else {
-            System.err.println("Could not find a post by id: " + id); // for testing debugging purposes
-            return "error";
+            logger.info("Could not find a post by id: " + id); // for testing debugging purposes
+            return er;
         }
     }
 
