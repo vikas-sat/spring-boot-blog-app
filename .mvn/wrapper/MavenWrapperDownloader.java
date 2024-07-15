@@ -57,7 +57,7 @@ public class MavenWrapperDownloader {
         String url = DEFAULT_DOWNLOAD_URL;
         if (mavenWrapperPropertyFile.exists()) {
             FileInputStream mavenWrapperPropertyFileInputStream = null;
-            try {
+            try-with-resources {
                 mavenWrapperPropertyFileInputStream = new FileInputStream(mavenWrapperPropertyFile);
                 Properties mavenWrapperProperties = new Properties();
                 mavenWrapperProperties.load(mavenWrapperPropertyFileInputStream);
