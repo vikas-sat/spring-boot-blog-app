@@ -5,8 +5,8 @@ services:
     ports:
       - "8082:8080"
     networks:
-      - bridge
+      - blog-network
 
 networks:
-  bridge:
-    external: true
+  blog-network:
+    driver: overlay
