@@ -4,9 +4,9 @@ services:
     image: kaz1456/spring-boot-blog-app:latest
     ports:
       - "8082:8080"
-#     networks:
-#       - blog-stack_default
+    networks:
+      - bridge
 
-# networks:
-#   blog-stack_default:
-#     driver: overlay
+networks:
+  bridge:
+    external: true
