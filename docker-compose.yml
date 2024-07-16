@@ -5,8 +5,8 @@ services:
     ports:
       - "8082:8080"
     networks:
-      - blog-network
+      - blog-stack_blog-network
 
 networks:
-  blog-network:
+  blog-stack_blog-network:
     driver: overlay
